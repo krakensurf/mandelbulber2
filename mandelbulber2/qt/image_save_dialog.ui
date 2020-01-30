@@ -33,8 +33,8 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>465</width>
-          <height>527</height>
+          <width>447</width>
+          <height>559</height>
          </rect>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_image">
@@ -90,34 +90,10 @@
               <property name="spacing">
                <number>2</number>
               </property>
-              <item row="0" column="0">
-               <widget class="QLabel" name="label_10">
+              <item row="2" column="2">
+               <widget class="MyLineEdit" name="text_alpha_postfix">
                 <property name="text">
-                 <string>Image Channel</string>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="1">
-               <widget class="QLabel" name="label_8">
-                <property name="text">
-                 <string>Quality</string>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="2">
-               <widget class="QLabel" name="label_9">
-                <property name="text">
-                 <string>Postfix</string>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="0">
-               <widget class="MyCheckBox" name="checkBox_color_enabled">
-                <property name="text">
-                 <string>Color</string>
-                </property>
-                <property name="checked">
-                 <bool>true</bool>
+                 <string/>
                 </property>
                </widget>
               </item>
@@ -140,13 +116,6 @@
                 </item>
                </widget>
               </item>
-              <item row="1" column="2">
-               <widget class="MyLineEdit" name="text_color_postfix">
-                <property name="text">
-                 <string/>
-                </property>
-               </widget>
-              </item>
               <item row="2" column="0">
                <widget class="MyCheckBox" name="checkBox_alpha_enabled">
                 <property name="text">
@@ -154,27 +123,15 @@
                 </property>
                </widget>
               </item>
-              <item row="2" column="1">
-               <widget class="MyComboBox" name="comboBox_alpha_quality">
-                <item>
-                 <property name="text">
-                  <string>8 bit</string>
-                 </property>
-                </item>
-                <item>
-                 <property name="text">
-                  <string>16 bit</string>
-                 </property>
-                </item>
-                <item>
-                 <property name="text">
-                  <string>32 bit</string>
-                 </property>
-                </item>
+              <item row="0" column="1">
+               <widget class="QLabel" name="label_8">
+                <property name="text">
+                 <string>Quality</string>
+                </property>
                </widget>
               </item>
-              <item row="2" column="2">
-               <widget class="MyLineEdit" name="text_alpha_postfix">
+              <item row="1" column="2">
+               <widget class="MyLineEdit" name="text_color_postfix">
                 <property name="text">
                  <string/>
                 </property>
@@ -184,6 +141,30 @@
                <widget class="MyCheckBox" name="checkBox_zbuffer_enabled">
                 <property name="text">
                  <string>Z Buffer</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0">
+               <widget class="MyCheckBox" name="checkBox_color_enabled">
+                <property name="text">
+                 <string>Color</string>
+                </property>
+                <property name="checked">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item row="3" column="2">
+               <widget class="MyLineEdit" name="text_zbuffer_postfix">
+                <property name="text">
+                 <string/>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="0">
+               <widget class="QLabel" name="label_10">
+                <property name="text">
+                 <string>Image Channel</string>
                 </property>
                </widget>
               </item>
@@ -206,10 +187,36 @@
                 </item>
                </widget>
               </item>
-              <item row="3" column="2">
-               <widget class="MyLineEdit" name="text_zbuffer_postfix">
+              <item row="2" column="1">
+               <widget class="MyComboBox" name="comboBox_alpha_quality">
+                <item>
+                 <property name="text">
+                  <string>8 bit</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>16 bit</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>32 bit</string>
+                 </property>
+                </item>
+               </widget>
+              </item>
+              <item row="0" column="2">
+               <widget class="QLabel" name="label_9">
                 <property name="text">
-                 <string/>
+                 <string>Postfix</string>
+                </property>
+               </widget>
+              </item>
+              <item row="3" column="3">
+               <widget class="QCheckBox" name="checkBox_invert_zbuffer">
+                <property name="text">
+                 <string>Invert</string>
                 </property>
                </widget>
               </item>
@@ -393,7 +400,7 @@ and will only be present after enabling and re-render.</string>
                 </property>
                </widget>
               </item>
-			  <item row="6" column="0">
+              <item row="6" column="0">
                <widget class="MyCheckBox" name="checkBox_normalWorld_enabled">
                 <property name="text">
                  <string>World Normal</string>

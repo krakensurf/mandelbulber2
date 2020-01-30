@@ -44,6 +44,7 @@
 #include <QtCore>
 
 #include "color_structures.hpp"
+#include <QCheckBox>
 
 // custom includes
 #ifdef USE_EXR
@@ -147,6 +148,7 @@ public:
 	QString CreateFullFileNameAndMakeDir(const QString &filename, enumImageContentType contentType,
 		const QString &postfix, const QString extension);
 
+
 protected:
 	QString filename;
 	cImage *image;
@@ -189,6 +191,7 @@ public:
 	static bool SavePNGQtBlackAndWhite(QString filename, unsigned char *image, int width, int height);
 	void SavePngRgbPixel(
 		structSaveImageChannel imageChannel, char *colorPtr, sRGBFloat pixel, bool signedInput);
+
 
 private:
 	bool hasAppendAlphaCustom;

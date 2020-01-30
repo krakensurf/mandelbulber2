@@ -53,10 +53,9 @@ cRandomizerDialog::cRandomizerDialog(QWidget *parent)
 		&cRandomizerDialog::slotClickedMediumRandomize);
 	connect(ui->pushButton_slight, &QPushButton::clicked, this,
 		&cRandomizerDialog::slotClickedSlightRandomize);
-	connect(
-		ui->pushButton_use, &QPushButton::clicked, this, &cRandomizerDialog::slotClickedUseButton);
-	connect(
-		ui->pushButton_reset, &QPushButton::clicked, this, &cRandomizerDialog::slotClickedResetButton);
+	connect(ui->pushButton_use, &QPushButton::clicked, this, &cRandomizerDialog::slotClickedUseButton);
+	connect(ui->pushButton_reset, &QPushButton::clicked, this, &cRandomizerDialog::slotClickedResetButton);
+    connect(ui->randomSlider, &QSlider::sliderReleased, this, &cRandomizerDialog::slotSlideRandomize);
 
 	for (int i = 1; i <= numberOfVersions; i++)
 	{
@@ -218,6 +217,10 @@ void cRandomizerDialog::slotClickedMediumRandomize()
 void cRandomizerDialog::slotClickedHeavyRandomize()
 {
 	Randomize(randomizeHeavy);
+}
+void cRandomizerDialog::slotSlideRandomize()
+{
+    Randomize(slider);
 }
 
 void cRandomizerDialog::AssignSourceWidget(const QWidget *sourceWidget)
@@ -510,6 +513,23 @@ void cRandomizerDialog::RandomizeParameters(enimRandomizeStrength strength,
 			randomScale = 1.0;
 			break;
 		}
+        case slider:
+        {
+            double slideVal = ui->randomSlider->value();
+           // double inverseVal = 101-slideVal;
+            if(slideVal > 10 && slideVal < 49) {
+                numberOfParametersToChange = numberOfParameters / 100 + 2;
+            }
+            else if(slideVal > 50 && slideVal < 101){
+                numberOfParametersToChange = numberOfParameters / 10 + 3;
+            }
+            else {
+                numberOfParametersToChange = 1;
+            }
+
+            randomScale = slideVal/100;
+            break;
+        }
 	}
 	numberOfParametersToChange = qMin(numberOfParametersToChange, numberOfParameters);
 

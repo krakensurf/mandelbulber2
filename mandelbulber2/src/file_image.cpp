@@ -53,6 +53,7 @@
 
 const uint64_t ImageFileSave::SAVE_CHUNK_SIZE;
 
+
 ImageFileSave::ImageFileSave(QString filename, cImage *image, ImageConfig imageConfig)
 {
 	this->filename = filename;
@@ -271,6 +272,10 @@ QStringList ImageFileSaveJPG::SaveImage()
 
 	QStringList listOfSavedFiles;
 
+    bool invert = gPar->Get<bool>("invert_zbuffer");
+
+
+
 	currentChannel = 0;
 	totalChannel = imageConfig.size();
 	for (ImageConfig::iterator channel = imageConfig.begin(); channel != imageConfig.end(); ++channel)
@@ -321,6 +326,7 @@ QStringList ImageFileSaveJPG::SaveImage()
 						int intZ = int(z1 * 240);
 						if (z > 1e19f) intZ = 255;
 						zBuffer8Bit[ptr] = uchar(intZ);
+                        if(invert) zBuffer8Bit[ptr] = 255-uchar(intZ);
 					}
 				}
 				SaveJPEGQtGreyscale(fullFilename, zBuffer8Bit, image->GetWidth(), image->GetHeight(),
@@ -1065,7 +1071,7 @@ bool ImageFileSaveJPG::SaveJPEGQtGreyscale(QString filename, unsigned char *imag
 bool ImageFileSavePNG::SavePNGQtBlackAndWhite(
 	QString filename, unsigned char *image, int width, int height)
 {
-	QImage *qImage = new QImage(width, height, QImage::Format_Mono);
+    QImage *qImage = new QImage(width, height, QImage::Format_Mono);
 	QVector<QRgb> my_table;
 	my_table.push_back(qRgb(0, 0, 0));
 	my_table.push_back(qRgb(255, 255, 255));
@@ -1524,24 +1530,31 @@ bool ImageFileSaveTIFF::SaveTIFF(
 					}
 				}
 				break;
+
+                bool invert = gPar->Get<bool>("invert_zbuffer");
+
+
 				case IMAGE_CONTENT_ZBUFFER:
 				{
 					if (imageChannel.channelQuality == IMAGE_CHANNEL_QUALITY_32)
 					{
 						float *typedColorPtr = reinterpret_cast<float *>(&colorPtr[ptr]);
 						*typedColorPtr = (image->GetPixelZBuffer(x, y) - minZ) / rangeZ;
+                        if(invert) *typedColorPtr = 1 - *typedColorPtr;
 					}
 					if (imageChannel.channelQuality == IMAGE_CHANNEL_QUALITY_16)
 					{
 						unsigned short *typedColorPtr = reinterpret_cast<unsigned short *>(&colorPtr[ptr]);
 						*typedColorPtr =
 							static_cast<unsigned short>(((image->GetPixelZBuffer(x, y) - minZ) / rangeZ) * 65535);
+                        if(invert) *typedColorPtr = 65535 - *typedColorPtr;
 					}
 					else
 					{
 						unsigned char *typedColorPtr = reinterpret_cast<unsigned char *>(&colorPtr[ptr]);
 						*typedColorPtr =
 							static_cast<unsigned char>(((image->GetPixelZBuffer(x, y) - minZ) / rangeZ) * 255);
+                        if(invert) *typedColorPtr = 255 - *typedColorPtr;
 					}
 				}
 				break;

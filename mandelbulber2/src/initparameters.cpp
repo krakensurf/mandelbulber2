@@ -509,6 +509,7 @@ void InitParams(cParameterContainer *par)
 	par->addParam("color_enabled", true, morphNone, paramApp);
 	par->addParam("alpha_enabled", false, morphNone, paramApp);
 	par->addParam("zbuffer_enabled", false, morphNone, paramApp);
+    par->addParam("invert_zbuffer", false, morphNone, paramApp);
 	par->addParam("normal_enabled", false, morphNone, paramApp);
 	par->addParam("normalWorld_enabled", false, morphNone, paramApp);
 	par->addParam("specular_enabled", false, morphNone, paramApp);

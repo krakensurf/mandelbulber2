@@ -39,7 +39,8 @@ private:
 	{
 		randomizeSlight,
 		randomizeMedium,
-		randomizeHeavy
+        randomizeHeavy,
+        slider
 	};
 
 	enum enumRandomizerPreviewSize
@@ -101,6 +102,7 @@ private slots:
 	void slotPreviewRendered();
 	void slotDetectedZeroDistance();
 	void slotRenderTime(double time);
+    void slotSlideRandomize();
 
 private:
 	Ui::cRandomizerDialog *ui;
