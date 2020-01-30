@@ -1,0 +1,891 @@
+
+
+diff --git a/mandelbulber2/qmake/mandelbulber-opencl.pro b/mandelbulber2/qmake/mandelbulber-opencl.pro
+index b8d1dca5..1c0744ef 100644
+--- a/mandelbulber2/qmake/mandelbulber-opencl.pro
++++ b/mandelbulber2/qmake/mandelbulber-opencl.pro
+@@ -2,3 +2,7 @@ CONFIG += opencl
+ 
+ include($$PWD/common.pri)
+ include($$PWD/installer.pri)
++
++HEADERS +=
++
++SOURCES +=
+diff --git a/mandelbulber2/qt/dock_animation.ui b/mandelbulber2/qt/dock_animation.ui
+index aa90558f..0819b818 100644
+--- a/mandelbulber2/qt/dock_animation.ui
++++ b/mandelbulber2/qt/dock_animation.ui
+@@ -212,6 +212,13 @@
+              </property>
+             </widget>
+            </item>
++           <item row="2" column="1">
++            <widget class="QPushButton" name="exportLocation">
++             <property name="text">
++              <string>exp Loc</string>
++             </property>
++            </widget>
++           </item>
+           </layout>
+          </item>
+          <item>
+@@ -224,8 +231,8 @@
+              <rect>
+               <x>0</x>
+               <y>0</y>
+-              <width>473</width>
+-              <height>407</height>
++              <width>505</width>
++              <height>405</height>
+              </rect>
+             </property>
+             <layout class="QVBoxLayout" name="verticalLayout_79">
+@@ -644,7 +651,7 @@
+             </sizepolicy>
+            </property>
+            <attribute name="verticalHeaderDefaultSectionSize">
+-            <number>20</number>
++            <number>21</number>
+            </attribute>
+           </widget>
+          </item>
+@@ -905,8 +912,8 @@
+              <rect>
+               <x>0</x>
+               <y>0</y>
+-              <width>404</width>
+-              <height>631</height>
++              <width>315</width>
++              <height>706</height>
+              </rect>
+             </property>
+             <layout class="QVBoxLayout" name="verticalLayout_92">
+@@ -1409,7 +1416,7 @@ keyframes</string>
+           </sizepolicy>
+          </property>
+          <attribute name="verticalHeaderDefaultSectionSize">
+-          <number>20</number>
++          <number>21</number>
+          </attribute>
+         </widget>
+        </item>
+diff --git a/mandelbulber2/qt/dock_fractal.ui b/mandelbulber2/qt/dock_fractal.ui
+index 60b8c33e..991e2528 100644
+--- a/mandelbulber2/qt/dock_fractal.ui
++++ b/mandelbulber2/qt/dock_fractal.ui
+@@ -93,19 +93,6 @@
+            </property>
+           </widget>
+          </item>
+-         <item>
+-          <spacer name="horizontalSpacer_2">
+-           <property name="orientation">
+-            <enum>Qt::Horizontal</enum>
+-           </property>
+-           <property name="sizeHint" stdset="0">
+-            <size>
+-             <width>40</width>
+-             <height>20</height>
+-            </size>
+-           </property>
+-          </spacer>
+-         </item>
+         </layout>
+        </item>
+        <item>
+@@ -156,8 +143,8 @@
+                <rect>
+                 <x>0</x>
+                 <y>0</y>
+-                <width>372</width>
+-                <height>802</height>
++                <width>370</width>
++                <height>799</height>
+                </rect>
+               </property>
+               <layout class="QVBoxLayout" name="verticalLayoutScroll_fractal_1" stretch="1,0">
+@@ -225,8 +212,8 @@
+                <rect>
+                 <x>0</x>
+                 <y>0</y>
+-                <width>96</width>
+-                <height>26</height>
++                <width>98</width>
++                <height>28</height>
+                </rect>
+               </property>
+               <layout class="QVBoxLayout" name="verticalLayoutScroll_fractal_3">
+@@ -284,8 +271,8 @@
+                <rect>
+                 <x>0</x>
+                 <y>0</y>
+-                <width>96</width>
+-                <height>26</height>
++                <width>98</width>
++                <height>28</height>
+                </rect>
+               </property>
+               <layout class="QVBoxLayout" name="verticalLayoutScroll_fractal_4">
+@@ -343,8 +330,8 @@
+                <rect>
+                 <x>0</x>
+                 <y>0</y>
+-                <width>96</width>
+-                <height>26</height>
++                <width>98</width>
++                <height>28</height>
+                </rect>
+               </property>
+               <layout class="QVBoxLayout" name="verticalLayoutScroll_fractal_5">
+@@ -402,8 +389,8 @@
+                <rect>
+                 <x>0</x>
+                 <y>0</y>
+-                <width>96</width>
+-                <height>26</height>
++                <width>98</width>
++                <height>28</height>
+                </rect>
+               </property>
+               <layout class="QVBoxLayout" name="verticalLayoutScroll_fractal_6">
+@@ -461,8 +448,8 @@
+                <rect>
+                 <x>0</x>
+                 <y>0</y>
+-                <width>96</width>
+-                <height>26</height>
++                <width>98</width>
++                <height>28</height>
+                </rect>
+               </property>
+               <layout class="QVBoxLayout" name="verticalLayoutScroll_fractal_7">
+@@ -520,8 +507,8 @@
+                <rect>
+                 <x>0</x>
+                 <y>0</y>
+-                <width>96</width>
+-                <height>26</height>
++                <width>98</width>
++                <height>28</height>
+                </rect>
+               </property>
+               <layout class="QVBoxLayout" name="verticalLayoutScroll_fractal_8">
+@@ -579,8 +566,8 @@
+                <rect>
+                 <x>0</x>
+                 <y>0</y>
+-                <width>96</width>
+-                <height>26</height>
++                <width>98</width>
++                <height>28</height>
+                </rect>
+               </property>
+               <layout class="QVBoxLayout" name="verticalLayoutScroll_fractal_9">
+@@ -638,8 +625,8 @@
+                <rect>
+                 <x>0</x>
+                 <y>0</y>
+-                <width>96</width>
+-                <height>26</height>
++                <width>98</width>
++                <height>28</height>
+                </rect>
+               </property>
+               <layout class="QVBoxLayout" name="verticalLayoutScroll_fractal_10">
+@@ -746,8 +733,8 @@
+            <rect>
+             <x>0</x>
+             <y>0</y>
+-            <width>380</width>
+-            <height>851</height>
++            <width>292</width>
++            <height>912</height>
+            </rect>
+           </property>
+           <layout class="QVBoxLayout" name="verticalLayout_68">
+@@ -2255,8 +2242,8 @@ distance estimation)</string>
+            <rect>
+             <x>0</x>
+             <y>0</y>
+-            <width>228</width>
+-            <height>309</height>
++            <width>265</width>
++            <height>327</height>
+            </rect>
+           </property>
+           <layout class="QVBoxLayout" name="verticalLayout_74">
+@@ -2820,11 +2807,6 @@ and water):</string>
+    <extends>QPushButton</extends>
+    <header>buton_reset_settings_from_widget.h</header>
+   </customwidget>
+-  <customwidget>
+-   <class>MyComboBox</class>
+-   <extends>QComboBox</extends>
+-   <header>my_combo_box.h</header>
+-  </customwidget>
+   <customwidget>
+    <class>MyDoubleSpinBox</class>
+    <extends>QDoubleSpinBox</extends>
+@@ -2841,6 +2823,11 @@ and water):</string>
+    <header>material_selector.h</header>
+    <container>1</container>
+   </customwidget>
++  <customwidget>
++   <class>MyComboBox</class>
++   <extends>QComboBox</extends>
++   <header>my_combo_box.h</header>
++  </customwidget>
+   <customwidget>
+    <class>MyTabWidget</class>
+    <extends>QTabWidget</extends>
+diff --git a/mandelbulber2/qt/image_save_dialog.ui b/mandelbulber2/qt/image_save_dialog.ui
+index d2f25006..e516b4c4 100644
+--- a/mandelbulber2/qt/image_save_dialog.ui
++++ b/mandelbulber2/qt/image_save_dialog.ui
+@@ -33,8 +33,8 @@
+          <rect>
+           <x>0</x>
+           <y>0</y>
+-          <width>465</width>
+-          <height>527</height>
++          <width>447</width>
++          <height>559</height>
+          </rect>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_image">
+@@ -90,34 +90,10 @@
+               <property name="spacing">
+                <number>2</number>
+               </property>
+-              <item row="0" column="0">
+-               <widget class="QLabel" name="label_10">
+-                <property name="text">
+-                 <string>Image Channel</string>
+-                </property>
+-               </widget>
+-              </item>
+-              <item row="0" column="1">
+-               <widget class="QLabel" name="label_8">
+-                <property name="text">
+-                 <string>Quality</string>
+-                </property>
+-               </widget>
+-              </item>
+-              <item row="0" column="2">
+-               <widget class="QLabel" name="label_9">
+-                <property name="text">
+-                 <string>Postfix</string>
+-                </property>
+-               </widget>
+-              </item>
+-              <item row="1" column="0">
+-               <widget class="MyCheckBox" name="checkBox_color_enabled">
++              <item row="2" column="2">
++               <widget class="MyLineEdit" name="text_alpha_postfix">
+                 <property name="text">
+-                 <string>Color</string>
+-                </property>
+-                <property name="checked">
+-                 <bool>true</bool>
++                 <string/>
+                 </property>
+                </widget>
+               </item>
+@@ -140,6 +116,20 @@
+                 </item>
+                </widget>
+               </item>
++              <item row="2" column="0">
++               <widget class="MyCheckBox" name="checkBox_alpha_enabled">
++                <property name="text">
++                 <string>Alpha</string>
++                </property>
++               </widget>
++              </item>
++              <item row="0" column="1">
++               <widget class="QLabel" name="label_8">
++                <property name="text">
++                 <string>Quality</string>
++                </property>
++               </widget>
++              </item>
+               <item row="1" column="2">
+                <widget class="MyLineEdit" name="text_color_postfix">
+                 <property name="text">
+@@ -147,15 +137,39 @@
+                 </property>
+                </widget>
+               </item>
+-              <item row="2" column="0">
+-               <widget class="MyCheckBox" name="checkBox_alpha_enabled">
++              <item row="3" column="0">
++               <widget class="MyCheckBox" name="checkBox_zbuffer_enabled">
+                 <property name="text">
+-                 <string>Alpha</string>
++                 <string>Z Buffer</string>
+                 </property>
+                </widget>
+               </item>
+-              <item row="2" column="1">
+-               <widget class="MyComboBox" name="comboBox_alpha_quality">
++              <item row="1" column="0">
++               <widget class="MyCheckBox" name="checkBox_color_enabled">
++                <property name="text">
++                 <string>Color</string>
++                </property>
++                <property name="checked">
++                 <bool>true</bool>
++                </property>
++               </widget>
++              </item>
++              <item row="3" column="2">
++               <widget class="MyLineEdit" name="text_zbuffer_postfix">
++                <property name="text">
++                 <string/>
++                </property>
++               </widget>
++              </item>
++              <item row="0" column="0">
++               <widget class="QLabel" name="label_10">
++                <property name="text">
++                 <string>Image Channel</string>
++                </property>
++               </widget>
++              </item>
++              <item row="3" column="1">
++               <widget class="MyComboBox" name="comboBox_zbuffer_quality">
+                 <item>
+                  <property name="text">
+                   <string>8 bit</string>
+@@ -173,22 +187,8 @@
+                 </item>
+                </widget>
+               </item>
+-              <item row="2" column="2">
+-               <widget class="MyLineEdit" name="text_alpha_postfix">
+-                <property name="text">
+-                 <string/>
+-                </property>
+-               </widget>
+-              </item>
+-              <item row="3" column="0">
+-               <widget class="MyCheckBox" name="checkBox_zbuffer_enabled">
+-                <property name="text">
+-                 <string>Z Buffer</string>
+-                </property>
+-               </widget>
+-              </item>
+-              <item row="3" column="1">
+-               <widget class="MyComboBox" name="comboBox_zbuffer_quality">
++              <item row="2" column="1">
++               <widget class="MyComboBox" name="comboBox_alpha_quality">
+                 <item>
+                  <property name="text">
+                   <string>8 bit</string>
+@@ -206,10 +206,17 @@
+                 </item>
+                </widget>
+               </item>
+-              <item row="3" column="2">
+-               <widget class="MyLineEdit" name="text_zbuffer_postfix">
++              <item row="0" column="2">
++               <widget class="QLabel" name="label_9">
+                 <property name="text">
+-                 <string/>
++                 <string>Postfix</string>
++                </property>
++               </widget>
++              </item>
++              <item row="3" column="3">
++               <widget class="QCheckBox" name="checkBox_invert_zbuffer">
++                <property name="text">
++                 <string>Invert</string>
+                 </property>
+                </widget>
+               </item>
+@@ -393,7 +400,7 @@ and will only be present after enabling and re-render.</string>
+                 </property>
+                </widget>
+               </item>
+-			  <item row="6" column="0">
++              <item row="6" column="0">
+                <widget class="MyCheckBox" name="checkBox_normalWorld_enabled">
+                 <property name="text">
+                  <string>World Normal</string>
+diff --git a/mandelbulber2/qt/randomizer_dialog.cpp b/mandelbulber2/qt/randomizer_dialog.cpp
+index 9e3574d5..c7808b1b 100644
+--- a/mandelbulber2/qt/randomizer_dialog.cpp
++++ b/mandelbulber2/qt/randomizer_dialog.cpp
+@@ -53,10 +53,9 @@ cRandomizerDialog::cRandomizerDialog(QWidget *parent)
+ 		&cRandomizerDialog::slotClickedMediumRandomize);
+ 	connect(ui->pushButton_slight, &QPushButton::clicked, this,
+ 		&cRandomizerDialog::slotClickedSlightRandomize);
+-	connect(
+-		ui->pushButton_use, &QPushButton::clicked, this, &cRandomizerDialog::slotClickedUseButton);
+-	connect(
+-		ui->pushButton_reset, &QPushButton::clicked, this, &cRandomizerDialog::slotClickedResetButton);
++	connect(ui->pushButton_use, &QPushButton::clicked, this, &cRandomizerDialog::slotClickedUseButton);
++	connect(ui->pushButton_reset, &QPushButton::clicked, this, &cRandomizerDialog::slotClickedResetButton);
++    connect(ui->randomSlider, &QSlider::sliderReleased, this, &cRandomizerDialog::slotSlideRandomize);
+ 
+ 	for (int i = 1; i <= numberOfVersions; i++)
+ 	{
+@@ -219,6 +218,10 @@ void cRandomizerDialog::slotClickedHeavyRandomize()
+ {
+ 	Randomize(randomizeHeavy);
+ }
++void cRandomizerDialog::slotSlideRandomize()
++{
++    Randomize(slider);
++}
+ 
+ void cRandomizerDialog::AssignSourceWidget(const QWidget *sourceWidget)
+ {
+@@ -510,6 +513,23 @@ void cRandomizerDialog::RandomizeParameters(enimRandomizeStrength strength,
+ 			randomScale = 1.0;
+ 			break;
+ 		}
++        case slider:
++        {
++            double slideVal = ui->randomSlider->value();
++           // double inverseVal = 101-slideVal;
++            if(slideVal > 10 && slideVal < 49) {
++                numberOfParametersToChange = numberOfParameters / 100 + 2;
++            }
++            else if(slideVal > 50 && slideVal < 101){
++                numberOfParametersToChange = numberOfParameters / 10 + 3;
++            }
++            else {
++                numberOfParametersToChange = 1;
++            }
++
++            randomScale = slideVal/100;
++            break;
++        }
+ 	}
+ 	numberOfParametersToChange = qMin(numberOfParametersToChange, numberOfParameters);
+ 
+diff --git a/mandelbulber2/qt/randomizer_dialog.h b/mandelbulber2/qt/randomizer_dialog.h
+index 10613d9c..107b184b 100644
+--- a/mandelbulber2/qt/randomizer_dialog.h
++++ b/mandelbulber2/qt/randomizer_dialog.h
+@@ -39,7 +39,8 @@ private:
+ 	{
+ 		randomizeSlight,
+ 		randomizeMedium,
+-		randomizeHeavy
++        randomizeHeavy,
++        slider
+ 	};
+ 
+ 	enum enumRandomizerPreviewSize
+@@ -101,6 +102,7 @@ private slots:
+ 	void slotPreviewRendered();
+ 	void slotDetectedZeroDistance();
+ 	void slotRenderTime(double time);
++    void slotSlideRandomize();
+ 
+ private:
+ 	Ui::cRandomizerDialog *ui;
+diff --git a/mandelbulber2/qt/randomizer_dialog.ui b/mandelbulber2/qt/randomizer_dialog.ui
+index b37b2bac..1eb826a1 100644
+--- a/mandelbulber2/qt/randomizer_dialog.ui
++++ b/mandelbulber2/qt/randomizer_dialog.ui
+@@ -39,6 +39,25 @@
+          </property>
+         </widget>
+        </item>
++       <item>
++        <widget class="QSlider" name="randomSlider">
++         <property name="minimum">
++          <number>1</number>
++         </property>
++         <property name="maximum">
++          <number>100</number>
++         </property>
++         <property name="sliderPosition">
++          <number>10</number>
++         </property>
++         <property name="orientation">
++          <enum>Qt::Horizontal</enum>
++         </property>
++         <property name="tickPosition">
++          <enum>QSlider::TicksBelow</enum>
++         </property>
++        </widget>
++       </item>
+        <item>
+         <widget class="QPushButton" name="pushButton_reset">
+          <property name="text">
+diff --git a/mandelbulber2/src/animation_flight.cpp b/mandelbulber2/src/animation_flight.cpp
+index 7778fd06..87948ec6 100644
+--- a/mandelbulber2/src/animation_flight.cpp
++++ b/mandelbulber2/src/animation_flight.cpp
+@@ -61,6 +61,7 @@
+ #include "rendering_configuration.hpp"
+ #include "settings.hpp"
+ #include "undo.h"
++#include "keyframes.hpp"
+ 
+ #include "qt/dock_animation.h"
+ #include "qt/dock_navigation.h"
+@@ -108,6 +109,8 @@ cFlightAnimation::cFlightAnimation(cInterface *_interface, cAnimationFrames *_fr
+ 		connect(mainInterface->renderedImage, SIGNAL(ShiftModeChanged(bool)), this,
+ 			SLOT(slotOrthogonalStrafe(bool)));
+ 
++        connect(ui->exportLocation, SIGNAL(clicked()), this, SLOT(expLoc()));  // Export Values to a file
++
+ 		// connect renderedImage signals
+ 		connect(mainInterface->renderedImage, SIGNAL(StrafeChanged(CVector2<double>)), this,
+ 			SLOT(slotFlightStrafe(CVector2<double>)));
+@@ -179,8 +182,112 @@ cFlightAnimation::cFlightAnimation(cInterface *_interface, cAnimationFrames *_fr
+ 	recordPause = false;
+ 	orthogonalStrafe = false;
+ 	negativeFlightSpeed = false;
++    QList<QString> listParms;
+ }
+ 
++//... This is a function designed to export camera values to a file //
++// ---------------------------------------------------------------- //
++// -----------------------------------------------------------------//
++
++void cFlightAnimation::expLoc()   // my test function invoked by a button on animation ui.
++{
++
++    QMessageBox::StandardButton reply = QMessageBox::NoButton;
++    using namespace parameterContainer;
++
++QString fileName;
++QString currentFile;
++cParameterContainer frame = *params;
++
++
++QList<cAnimationFrames::sAnimationFrame> listOfFrames = frames->GetFrames();
++
++
++fileName = "/home/kraken/Downloads/CamLocRot.txt";
++
++    // If we don't have a filename from before, get one.
++    if (currentFile.isEmpty()) {
++        fileName = "/home/kraken/Downloads/CamLocRot.txt";                      // QFileDialog::getSaveFileName(this, "Save");
++        currentFile = fileName;
++    } else {
++        fileName = currentFile;
++    }
++
++    QFile file(fileName);
++    if (!file.open(QIODevice::WriteOnly | QFile::Text)) {
++        emit QuestionMessage(
++            "Warning", "Warning Cannot save file: " + file.errorString(), QMessageBox::Yes | QMessageBox::No, &reply);
++        return;
++    }
++
++    const int noOfFrames = listOfFrames.count();
++    double duration = double(noOfFrames) / 24.0;
++
++    QString text = "{\"name\":\"Mandelbulber\",\"width\":1920,\"height\":1080,\"frameRate\":24,\"numFrames\":"+ QString::number(noOfFrames)+
++                            ",\"durationSeconds\":"+ QString::number(duration, 'g', 6) +",\"cameraFrames\":[";
++
++    // it is needed to do it also here, because limits must be set just after loading of settings
++    UpdateLimitsForFrameRange();
++    CVector3 camera ;
++    CVector3 lookAt ;
++
++
++    QString text_target = "\"lookAt\":[";
++
++    for (int i = 0; i < noOfFrames; ++i)
++    {
++        camera = listOfFrames[i].parameters.Get<CVector3>("main_camera");
++        lookAt = listOfFrames[i].parameters.Get<CVector3>("main_target");
++
++        text.append("{\"position\":{\"x\":" + QString::number(camera.x, 'g', 10) + ",\"y\":" +
++                                            QString::number(camera.y, 'g', 10) +",\"z\":" +
++                                            QString::number(camera.z, 'g', 10) +"},");
++
++        camera = listOfFrames[i].parameters.Get<CVector3>("main_camera_top");
++
++        text.append("\"rotation\":{\"x\":" + QString::number(camera.x, 'g', 10) + ",\"y\":" +
++                                            QString::number(camera.y, 'g', 10) +",\"z\":" +
++                                            QString::number(camera.z, 'g', 10) +"}},");
++
++        camera = listOfFrames[i].parameters.Get<CVector3>("main_target");
++
++        text_target.append("{\"position\":{\"x\":" + QString::number(lookAt.x, 'g', 10) + ",\"y\":" +
++                                            QString::number(lookAt.y, 'g', 10) +",\"z\":" +
++                                            QString::number(lookAt.z, 'g', 10) +"}," +
++                                            "\"rotation\":{\"x\":0,\"y\":0,\"z\":0}," +
++                                            "\"name\":\"Target\",\"visible\":true},");
++
++        /**text_target.append("{\"position\":{\"x\":" + QString::number(camera.x, 'g', 10) + ",\"y\":" +
++                                            QString::number(camera.y, 'g', 10) +",\"z\":" +
++                                            QString::number(camera.z, 'g', 10) +"}},");
++        **/
++
++
++    }
++
++
++    text_target.chop(1);
++    text_target.append("]}");
++    text.chop(1);
++    text.append("],");
++
++    /**int countOfParams = listOfFrames[0].parameters.GetListOfParameters().count();
++    for(int i = 0 ; i < countOfParams; i++) {
++        text.append("\n"+ listOfFrames[0].parameters.GetListOfParameters()[i]);
++    }
++    **/
++
++    QTextStream out(&file);
++
++    out << text + text_target + "\n";
++    file.close();
++
++    emit QuestionMessage(
++        "Cool Beans", "File Written: " + fileName, QMessageBox::Yes | QMessageBox::No, &reply);
++    }
++
++// -----------------------------------//
++// -----------------------------------//
+ void cFlightAnimation::slotRecordFlight()
+ {
+ 	if (frames)
+@@ -1119,7 +1226,8 @@ bool cFlightAnimation::RenderFlight(bool *stopRequest)
+ 			}
+ 
+ 			gApplication->processEvents();
+-		}
++
++        } // end loop
+ 
+ 		emit updateProgressAndStatus(QObject::tr("Animation finished"), progressText.getText(1.0), 1.0,
+ 			cProgressText::progress_IMAGE);
+@@ -1700,3 +1808,5 @@ void cFligtAnimRenderThread::startAnimationRender()
+ 	gFlightAnimation->RenderFlight(&gMainInterface->stopRequest);
+ 	emit renderingFinished();
+ }
++
++
+diff --git a/mandelbulber2/src/animation_flight.hpp b/mandelbulber2/src/animation_flight.hpp
+index d749d7ba..51d44a78 100644
+--- a/mandelbulber2/src/animation_flight.hpp
++++ b/mandelbulber2/src/animation_flight.hpp
+@@ -42,6 +42,7 @@
+ #define MANDELBULBER2_SRC_ANIMATION_FLIGHT_HPP_
+ 
+ #include <qmessagebox.h>
++#include <iostream>
+ 
+ #include "algebra.hpp"
+ #include "animation_frames.hpp"
+@@ -105,6 +106,7 @@ public slots:
+ 	void slotAnimationStopRequest();
+ 
+ private slots:
++    void expLoc();
+ 	void slotRecordFlight();
+ 	void slotContinueRecording();
+ 	void slotFlightChangeSpeed(double amount);
+@@ -197,7 +199,7 @@ extern cFlightAnimation *gFlightAnimation;
+ 
+ class cFligtAnimRenderThread : public QThread
+ {
+-	Q_OBJECT;
++    Q_OBJECT
+ 
+ public:
+ 	cFligtAnimRenderThread(QString &settingsText);
+@@ -207,6 +209,7 @@ public slots:
+ 
+ private:
+ 	QString settingsText;
++    QString currentFile;
+ 
+ signals:
+ 	void renderingFinished();
+diff --git a/mandelbulber2/src/animation_keyframes.cpp b/mandelbulber2/src/animation_keyframes.cpp
+index 994597e3..e0107040 100644
+--- a/mandelbulber2/src/animation_keyframes.cpp
++++ b/mandelbulber2/src/animation_keyframes.cpp
+@@ -119,6 +119,8 @@ cKeyframeAnimation::cKeyframeAnimation(cInterface *_interface, cKeyframes *_fram
+ 		connect(ui->tableWidget_keyframe_animation, SIGNAL(cellClicked(int, int)), this,
+ 			SLOT(slotCellClicked(int, int)));
+ 
++
++
+ 		// connect system tray
+ 		connect(mainInterface->systemTray, SIGNAL(notifyRenderKeyframes()), this,
+ 			SLOT(slotRenderKeyframes()));
+diff --git a/mandelbulber2/src/file_image.cpp b/mandelbulber2/src/file_image.cpp
+index 2e5d5343..9290616a 100644
+--- a/mandelbulber2/src/file_image.cpp
++++ b/mandelbulber2/src/file_image.cpp
+@@ -53,6 +53,7 @@
+ 
+ const uint64_t ImageFileSave::SAVE_CHUNK_SIZE;
+ 
++
+ ImageFileSave::ImageFileSave(QString filename, cImage *image, ImageConfig imageConfig)
+ {
+ 	this->filename = filename;
+@@ -271,6 +272,10 @@ QStringList ImageFileSaveJPG::SaveImage()
+ 
+ 	QStringList listOfSavedFiles;
+ 
++    bool invert = gPar->Get<bool>("invert_zbuffer");
++
++
++
+ 	currentChannel = 0;
+ 	totalChannel = imageConfig.size();
+ 	for (ImageConfig::iterator channel = imageConfig.begin(); channel != imageConfig.end(); ++channel)
+@@ -321,6 +326,7 @@ QStringList ImageFileSaveJPG::SaveImage()
+ 						int intZ = int(z1 * 240);
+ 						if (z > 1e19f) intZ = 255;
+ 						zBuffer8Bit[ptr] = uchar(intZ);
++                        if(invert) zBuffer8Bit[ptr] = 255-uchar(intZ);
+ 					}
+ 				}
+ 				SaveJPEGQtGreyscale(fullFilename, zBuffer8Bit, image->GetWidth(), image->GetHeight(),
+@@ -1065,7 +1071,7 @@ bool ImageFileSaveJPG::SaveJPEGQtGreyscale(QString filename, unsigned char *imag
+ bool ImageFileSavePNG::SavePNGQtBlackAndWhite(
+ 	QString filename, unsigned char *image, int width, int height)
+ {
+-	QImage *qImage = new QImage(width, height, QImage::Format_Mono);
++    QImage *qImage = new QImage(width, height, QImage::Format_Mono);
+ 	QVector<QRgb> my_table;
+ 	my_table.push_back(qRgb(0, 0, 0));
+ 	my_table.push_back(qRgb(255, 255, 255));
+@@ -1524,24 +1530,31 @@ bool ImageFileSaveTIFF::SaveTIFF(
+ 					}
+ 				}
+ 				break;
++
++                bool invert = gPar->Get<bool>("invert_zbuffer");
++
++
+ 				case IMAGE_CONTENT_ZBUFFER:
+ 				{
+ 					if (imageChannel.channelQuality == IMAGE_CHANNEL_QUALITY_32)
+ 					{
+ 						float *typedColorPtr = reinterpret_cast<float *>(&colorPtr[ptr]);
+ 						*typedColorPtr = (image->GetPixelZBuffer(x, y) - minZ) / rangeZ;
++                        if(invert) *typedColorPtr = 1 - *typedColorPtr;
+ 					}
+ 					if (imageChannel.channelQuality == IMAGE_CHANNEL_QUALITY_16)
+ 					{
+ 						unsigned short *typedColorPtr = reinterpret_cast<unsigned short *>(&colorPtr[ptr]);
+ 						*typedColorPtr =
+ 							static_cast<unsigned short>(((image->GetPixelZBuffer(x, y) - minZ) / rangeZ) * 65535);
++                        if(invert) *typedColorPtr = 65535 - *typedColorPtr;
+ 					}
+ 					else
+ 					{
+ 						unsigned char *typedColorPtr = reinterpret_cast<unsigned char *>(&colorPtr[ptr]);
+ 						*typedColorPtr =
+ 							static_cast<unsigned char>(((image->GetPixelZBuffer(x, y) - minZ) / rangeZ) * 255);
++                        if(invert) *typedColorPtr = 255 - *typedColorPtr;
+ 					}
+ 				}
+ 				break;
+diff --git a/mandelbulber2/src/file_image.hpp b/mandelbulber2/src/file_image.hpp
+index c5506863..d7202625 100644
+--- a/mandelbulber2/src/file_image.hpp
++++ b/mandelbulber2/src/file_image.hpp
+@@ -44,6 +44,7 @@
+ #include <QtCore>
+ 
+ #include "color_structures.hpp"
++#include <QCheckBox>
+ 
+ // custom includes
+ #ifdef USE_EXR
+@@ -147,6 +148,7 @@ public:
+ 	QString CreateFullFileNameAndMakeDir(const QString &filename, enumImageContentType contentType,
+ 		const QString &postfix, const QString extension);
+ 
++
+ protected:
+ 	QString filename;
+ 	cImage *image;
+@@ -190,6 +192,7 @@ public:
+ 	void SavePngRgbPixel(
+ 		structSaveImageChannel imageChannel, char *colorPtr, sRGBFloat pixel, bool signedInput);
+ 
++
+ private:
+ 	bool hasAppendAlphaCustom;
+ 	bool appendAlphaCustom;
+diff --git a/mandelbulber2/src/initparameters.cpp b/mandelbulber2/src/initparameters.cpp
+index 924fa6a8..43c34102 100644
+--- a/mandelbulber2/src/initparameters.cpp
++++ b/mandelbulber2/src/initparameters.cpp
+@@ -509,6 +509,7 @@ void InitParams(cParameterContainer *par)
+ 	par->addParam("color_enabled", true, morphNone, paramApp);
+ 	par->addParam("alpha_enabled", false, morphNone, paramApp);
+ 	par->addParam("zbuffer_enabled", false, morphNone, paramApp);
++    par->addParam("invert_zbuffer", false, morphNone, paramApp);
+ 	par->addParam("normal_enabled", false, morphNone, paramApp);
+ 	par->addParam("normalWorld_enabled", false, morphNone, paramApp);
+ 	par->addParam("specular_enabled", false, morphNone, paramApp);
+diff --git a/mandelbulber2/src/keyframes.cpp b/mandelbulber2/src/keyframes.cpp
+index 95272fb8..796d4545 100644
+--- a/mandelbulber2/src/keyframes.cpp
++++ b/mandelbulber2/src/keyframes.cpp
+@@ -38,6 +38,9 @@
+  */
+ 
+ #include "keyframes.hpp"
++#include <iostream>
++#include <fstream>
++using namespace std;
+ 
+ cKeyframes *gKeyframes = nullptr;
+ 
+@@ -90,7 +93,7 @@ cAnimationFrames::sAnimationFrame cKeyframes::GetInterpolatedFrame(
+ 
+ 	sAnimationFrame interpolated;
+ 
+-	for (int i = 0; i < listOfParameters.size(); i++)
++    for (int i = 0; i < listOfParameters.size(); i++)
+ 	{
+ 		QString fullParameterName =
+ 			listOfParameters[i].containerName + "_" + listOfParameters[i].parameterName;
+@@ -100,11 +103,11 @@ cAnimationFrames::sAnimationFrame cKeyframes::GetInterpolatedFrame(
+ 		{
+ 			morph.append(new cMorph());
+ 		}
+-		for (int k = qMax(0, keyframe - 2); k <= qMin(frames.size() - 1, keyframe + 3); k++)
++        for (int k = qMax(0, keyframe - 2); k <= qMin(frames.size() - 1, keyframe + 3); k++)  // padding array for start and end keyframes
+ 		{
+ 			if (morph[i]->findInMorph(k) == -1)
+ 			{
+-				morph[i]->AddData(k, frames.at(k).parameters.GetAsOneParameter(fullParameterName));
++                morph[i]->AddData(k, frames.at(k).parameters.GetAsOneParameter(fullParameterName)); // get this parameters name
+ 			}
+ 		}
+ 		// interpolate each parameter
+@@ -117,7 +120,9 @@ cAnimationFrames::sAnimationFrame cKeyframes::GetInterpolatedFrame(
+ 			ApplyAudioAnimation(index, oneParameter, listOfParameters[i].parameterName, params);
+ 		interpolated.parameters.AddParamFromOneParameter(fullParameterName, oneParameter);
+ 	}
++
+ 	return interpolated;
++
+ }
+ 
+ void cKeyframes::GetInterpolatedFrameAndConsolidate(
+diff --git a/mandelbulber2/src/keyframes.hpp b/mandelbulber2/src/keyframes.hpp
+index 86e12f8c..72c16cdf 100644
+--- a/mandelbulber2/src/keyframes.hpp
++++ b/mandelbulber2/src/keyframes.hpp
+@@ -43,6 +43,7 @@
+ #include "animation_frames.hpp"
+ #include "morph.hpp"
+ 
++
+ class cKeyframes : public cAnimationFrames
+ {
+ 	// definitions:

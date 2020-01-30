@@ -37,9 +37,9 @@ void cFractalKnotV1::FormulaCode(CVector4 &z, const sFractal *fractal, sExtended
 
 	CVector4 zc = z;
 	zc.z *= fractal->transformCommon.scaleA1;
-	double mobius = double(fractal->transformCommon.intA1 + fractal->transformCommon.intB1
-						/ polyfoldOrder)
-							* atan2(zc.y, zc.x);
+	double mobius =
+		(1.0 * fractal->transformCommon.intA1 + fractal->transformCommon.intB1 / polyfoldOrder)
+		* atan2(zc.y, zc.x);
 
 	zc.x = sqrt(zc.x * zc.x + zc.y * zc.y) - fractal->transformCommon.offsetA2;
 	double temp = zc.x;
@@ -48,7 +48,7 @@ void cFractalKnotV1::FormulaCode(CVector4 &z, const sFractal *fractal, sExtended
 	zc.x = c * zc.x + s * zc.z;
 	zc.z = -s * temp + c * zc.z;
 
-	double m = float(polyfoldOrder) / M_PI_2x;
+	double m = 1.0 * polyfoldOrder / M_PI_2x;
 	double angle1 = floor(0.5 + m * (M_PI_2 - atan2(zc.x, zc.z))) / m;
 
 	temp = zc.x;
@@ -61,15 +61,19 @@ void cFractalKnotV1::FormulaCode(CVector4 &z, const sFractal *fractal, sExtended
 
 	double len = sqrt(zc.x * zc.x + zc.z * zc.z);
 
-	if (fractal->transformCommon.functionEnabledCFalse) len = min(len, max(abs(zc.x), abs(zc.z)));
+	if (fractal->transformCommon.functionEnabledCFalse) len = min(len, max(fabs(zc.x), fabs(zc.z)));
 
-	if (fractal->transformCommon.functionEnabledEFalse) z = zc;
+	aux.DE0 = len - fractal->transformCommon.offset01;
+
+	if (fractal->transformCommon.functionEnabledJFalse)
+	{
+		if (fractal->transformCommon.functionEnabledDFalse)
+			aux.DE0 = min(aux.dist, len - fractal->transformCommon.offset01);
+		if (fractal->transformCommon.functionEnabledKFalse) aux.DE0 /= aux.DE;
+		if (fractal->transformCommon.functionEnabledEFalse) z = zc;
+	}
 	double colorDist = aux.dist;
-	if (!fractal->transformCommon.functionEnabledDFalse)
-		aux.DE0 = len - fractal->transformCommon.offset01;
-	else
-		aux.DE0 = min(aux.dist, len - fractal->transformCommon.offset01);
-	aux.dist = aux.DE0 / aux.DE;
+	aux.dist = aux.DE0;
 
 	// aux.color
 	if (fractal->foldColor.auxColorEnabled)
@@ -77,15 +81,11 @@ void cFractalKnotV1::FormulaCode(CVector4 &z, const sFractal *fractal, sExtended
 		double colorAdd = 0.0;
 		double ang = (M_PI - 2.0 * fabs(atan(zc.x / zc.z))) * 2.0 / M_PI;
 
-		if (fractal->foldColor.auxColorEnabledFalse)
-		{
+		if (fmod(ang, 2.0) < 1.0) colorAdd += fractal->foldColor.difs0000.x;
+		colorAdd += fractal->foldColor.difs0000.y * fabs(ang);
+		colorAdd += fractal->foldColor.difs0000.z * fabs(ang * zc.x);
+		colorAdd += fractal->foldColor.difs0000.w * angle1;
 
-			if (fmod(ang, 2.0) < 1.0) colorAdd += fractal->foldColor.difs0000.x;
-			colorAdd += fractal->foldColor.difs0000.y * fabs(ang);
-			colorAdd += fractal->foldColor.difs0000.z * fabs(ang * zc.x);
-			colorAdd += fractal->foldColor.difs0000.w * angle1;
-
-		}
 		colorAdd += fractal->foldColor.difs1;
 		if (fractal->foldColor.auxColorEnabledA)
 		{

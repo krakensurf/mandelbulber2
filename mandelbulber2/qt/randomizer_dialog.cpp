@@ -18,6 +18,7 @@
 #include "src/initparameters.hpp"
 #include "src/fractal_container.hpp"
 #include "src/interface.hpp"
+#include "src/settings.hpp"
 
 cRandomizerDialog::cRandomizerDialog(QWidget *parent)
 		: QDialog(parent), ui(new Ui::cRandomizerDialog)
@@ -45,7 +46,7 @@ cRandomizerDialog::cRandomizerDialog(QWidget *parent)
 	previewWidth = sizeMultiply * baseSize * 4 / 3;
 	previewHeight = sizeMultiply * baseSize;
 
-	int qualityMultiplier = qualitySetiing + 1;
+	qualityMultiplier = qualitySetiing + 1;
 
 	connect(ui->pushButton_heavy, &QPushButton::clicked, this,
 		&cRandomizerDialog::slotClickedHeavyRandomize);
@@ -53,15 +54,30 @@ cRandomizerDialog::cRandomizerDialog(QWidget *parent)
 		&cRandomizerDialog::slotClickedMediumRandomize);
 	connect(ui->pushButton_slight, &QPushButton::clicked, this,
 		&cRandomizerDialog::slotClickedSlightRandomize);
+<<<<<<< HEAD
 	connect(ui->pushButton_use, &QPushButton::clicked, this, &cRandomizerDialog::slotClickedUseButton);
 	connect(ui->pushButton_reset, &QPushButton::clicked, this, &cRandomizerDialog::slotClickedResetButton);
     connect(ui->randomSlider, &QSlider::sliderReleased, this, &cRandomizerDialog::slotSlideRandomize);
+=======
+	connect(
+		ui->pushButton_use, &QPushButton::clicked, this, &cRandomizerDialog::slotClickedUseButton);
+	connect(
+		ui->pushButton_reset, &QPushButton::clicked, this, &cRandomizerDialog::slotClickedResetButton);
+	connect(ui->pushButton_clean_up, &QPushButton::clicked, this, &cRandomizerDialog::slotCleanUp);
+>>>>>>> refs/remotes/krakensurf/master
 
 	for (int i = 1; i <= numberOfVersions; i++)
 	{
 		QString widgetName = QString("pushButton_select_%1").arg(i, 2, 10, QChar('0'));
 		QPushButton *button = this->findChild<QPushButton *>(widgetName);
 		connect(button, &QPushButton::clicked, this, &cRandomizerDialog::slotClickedSelectButton);
+	}
+
+	for (int i = 1; i <= numberOfVersions; i++)
+	{
+		QString widgetName = QString("toolButton_save_%1").arg(i, 2, 10, QChar('0'));
+		QToolButton *button = this->findChild<QToolButton *>(widgetName);
+		connect(button, &QToolButton::clicked, this, &cRandomizerDialog::slotClickedSaveButton);
 	}
 
 	// local copy of parameters
@@ -111,14 +127,8 @@ cRandomizerDialog::~cRandomizerDialog()
 	delete referenceNoisePreview;
 }
 
-void cRandomizerDialog::Randomize(enimRandomizeStrength strength)
+void cRandomizerDialog::InitParameterContainers()
 {
-	actualStrength = strength;
-
-	QString progressBarText("Initializing Randomizer");
-	ui->progressBar->setFormat(progressBarText);
-	ui->progressBar->setValue(0.0);
-
 	// initialize parameter containers
 	listOfVersions.clear();
 	for (int i = 0; i < numberOfVersions; i++)
@@ -128,11 +138,11 @@ void cRandomizerDialog::Randomize(enimRandomizeStrength strength)
 		version.fractParams = actualFractParams;
 		listOfVersions.append(version);
 	}
+}
 
-	progressText.ResetTimer();
-
+void cRandomizerDialog::RefreshReferenceImage()
+{
 	// refresh actual reference image
-
 	ui->previewwidget_actual->AssignParameters(actualParams, actualFractParams);
 	if (!ui->previewwidget_actual->IsRendered())
 	{
@@ -144,19 +154,19 @@ void cRandomizerDialog::Randomize(enimRandomizeStrength strength)
 		}
 	}
 	ui->previewwidget_actual->update();
+}
 
+void cRandomizerDialog::RefreshReferenceSkyImage()
+{
 	// render reference sky
-
 	cParameterContainer parSky = actualParams;
 	cFractalContainer parFractSky = actualFractParams;
-
 	for (int i = 1; i <= NUMBER_OF_FRACTALS; i++)
 	{
 		parSky.Set("fractal_enable", i, false);
 	}
 	parSky.Set("iteration_threshold_mode", false);
 	// iterThresh mode needs to be disabled to render sky, otherwise DE will be zero.
-
 	referenceSkyPreview->AssignParameters(parSky, parFractSky);
 	if (!referenceSkyPreview->IsRendered())
 	{
@@ -167,7 +177,10 @@ void cRandomizerDialog::Randomize(enimRandomizeStrength strength)
 			Wait(10);
 		}
 	}
+}
 
+void cRandomizerDialog::CalcReferenceNoise()
+{
 	// render the same image as actual to calculate reference noise
 	referenceNoisePreview->AssignParameters(actualParams, actualFractParams);
 	if (!referenceNoisePreview->IsRendered())
@@ -181,8 +194,31 @@ void cRandomizerDialog::Randomize(enimRandomizeStrength strength)
 	}
 	cImage *actualImage = ui->previewwidget_actual->GetImage();
 	cImage *noiseRefImage = referenceNoisePreview->GetImage();
-	referenceNoise = VisualCompare(noiseRefImage, actualImage);
+	referenceNoise = noiseRefImage->VisualCompare(actualImage, true);
 	// qDebug() << "Reference noise: " << referenceNoise;
+}
+
+void cRandomizerDialog::Randomize(enimRandomizeStrength strength)
+{
+	actualStrength = strength;
+
+	QString progressBarText("Initializing Randomizer");
+	ui->progressBar->setFormat(progressBarText);
+	ui->progressBar->setValue(0.0);
+
+	// initialize parameter containers
+	InitParameterContainers();
+
+	progressText.ResetTimer();
+
+	// refresh actual reference image
+	RefreshReferenceImage();
+
+	// render reference sky
+	RefreshReferenceSkyImage();
+
+	// render the same image as actual to calculate reference noise
+	CalcReferenceNoise();
 
 	// randomizing
 	for (int i = 0; i < numberOfVersions; i++)
@@ -725,6 +761,13 @@ void cRandomizerDialog::CreateParametersTreeInWidget(
 				// exceptions
 				if (parameterName.contains("material_id")) continue;
 				if (parameterName == "info") continue;
+				if (parameterName == "analyticDE_enabled") continue;
+				if (parameterName == "analyticDE_enabled_false") continue;
+				if (parameterName == "analyticDE_scale_1") continue;
+				if (parameterName == "analyticDE_tweak_005") continue;
+				if (parameterName == "analyticDE_offset_0") continue;
+				if (parameterName == "analyticDE_offset_1") continue;
+				if (parameterName == "analyticDE_offset_2") continue;
 
 				QString containerName = myWidget->getParameterContainerName();
 				QString fullParameterName = containerName + "_" + parameterName;
@@ -810,6 +853,37 @@ void cRandomizerDialog::slotClickedSelectButton()
 	ui->previewwidget_actual->setToolTip(CreateTooltipText(actualListOfChangedParameters));
 }
 
+void cRandomizerDialog::slotClickedSaveButton()
+{
+	QString buttonName = this->sender()->objectName();
+	QString numberString = buttonName.right(2);
+	int buttonNumber = numberString.toInt();
+
+	cSettings parSettings(cSettings::formatCondensedText);
+	parSettings.CreateText(
+		&listOfVersions.at(buttonNumber - 1).params, &listOfVersions.at(buttonNumber - 1).fractParams);
+
+	QFileDialog dialog(this);
+	dialog.setOption(QFileDialog::DontUseNativeDialog);
+	dialog.setFileMode(QFileDialog::AnyFile);
+	dialog.setNameFilter(tr("Fractals (*.txt *.fract)"));
+	dialog.setDirectory(
+		QDir::toNativeSeparators(QFileInfo(systemData.lastSettingsFile).absolutePath()));
+	dialog.selectFile(
+		QDir::toNativeSeparators(QFileInfo(systemData.lastSettingsFile).completeBaseName()));
+	dialog.setAcceptMode(QFileDialog::AcceptSave);
+	dialog.setWindowTitle(tr("Save settings..."));
+	dialog.setDefaultSuffix("fract");
+	QStringList filenames;
+	if (dialog.exec())
+	{
+		filenames = dialog.selectedFiles();
+		QString filename = QDir::toNativeSeparators(filenames.first());
+		parSettings.SaveToFile(filename);
+		systemData.lastSettingsFile = filename;
+	}
+}
+
 void cRandomizerDialog::slotClickedUseButton()
 {
 	pressedUse = true;
@@ -825,7 +899,7 @@ void cRandomizerDialog::slotPreviewRendered()
 	QString numberString = previewName.right(2);
 	int previewNumber = numberString.toInt();
 
-	qDebug() << "Preview finished " << previewNumber;
+	//qDebug() << "Preview finished " << previewNumber;
 
 	cThumbnailWidget *widget = qobject_cast<cThumbnailWidget *>(this->sender());
 	widget->update();
@@ -834,11 +908,28 @@ void cRandomizerDialog::slotPreviewRendered()
 		cImage *image = widget->GetImage();
 		cImage *actualImage = ui->previewwidget_actual->GetImage();
 		cImage *skyImage = referenceSkyPreview->GetImage();
-		double difference = VisualCompare(image, actualImage) - referenceNoise;
-		double differenceSky = VisualCompare(image, skyImage) - referenceNoise;
+		double difference = image->VisualCompare(actualImage, true) - referenceNoise;
+		double differenceSky = image->VisualCompare(skyImage, true) - referenceNoise;
+
+		// compare with all another versions
+		for (int i = 1; i <= numberOfVersions; i++)
+		{
+			if (i == previewNumber) continue; // do not compare with the same image
+			if (versionsDone.at(i - 1))
+			{
+				QString widgetName = QString("previewwidget_%1").arg(i, 2, 10, QChar('0'));
+				cThumbnailWidget *previewWidget = this->findChild<cThumbnailWidget *>(widgetName);
+				cImage *imageFromOtherVersion = previewWidget->GetImage();
+				double diffOther =
+					(image->VisualCompare(imageFromOtherVersion, false) - referenceNoise) / 3.0;
+				// divided by 3 to make bigger differences between versions
+				difference = min(difference, diffOther);
+				//qDebug() << i << diffOther << difference;
+			}
+		}
 
 		int numberOfRepeats = numbersOfRepeats.at(previewNumber - 1);
-		qDebug() << "Differences: " << referenceNoise << difference << differenceSky << numberOfRepeats;
+		//qDebug() << "Differences: " << referenceNoise << difference << differenceSky << numberOfRepeats;
 
 		if (difference < referenceNoise * 3 || differenceSky < referenceNoise * 3)
 		{
@@ -879,7 +970,7 @@ void cRandomizerDialog::slotDetectedZeroDistance()
 	QString numberString = previewName.right(2);
 	int previewNumber = numberString.toInt();
 	cThumbnailWidget *widget = qobject_cast<cThumbnailWidget *>(this->sender());
-	qDebug() << "ZERO DISTANCE DETECTED " << previewNumber;
+	//qDebug() << "ZERO DISTANCE DETECTED " << previewNumber;
 
 	int numberOfRepeats = numbersOfRepeats.at(previewNumber - 1);
 	if (numberOfRepeats < 100)
@@ -897,47 +988,6 @@ void cRandomizerDialog::slotDetectedZeroDistance()
 		widget->setToolTip(CreateTooltipText(listsOfChangedParameters[previewNumber - 1]));
 		widget->update();
 	}
-}
-
-double cRandomizerDialog::VisualCompare(cImage *image, cImage *refImage)
-{
-	image->ConvertTo8bit();
-	refImage->ConvertTo8bit();
-
-	int min = 255 * 3;
-	int max = 0;
-
-	int w = image->GetWidth();
-	int h = refImage->GetHeight();
-	int numberOfPixels = w * h;
-
-	double totalDiff = 0.0;
-
-	for (int y = 2; y < h - 2; y++)
-	{
-		for (int x = 2; x < w - 2; x++)
-		{
-			sRGB8 pixel1 = image->GetPixelImage8(x, y);
-			sRGB8 pixel2 = refImage->GetPixelImage8(x, y);
-			double rDiffR = double(pixel1.R) - pixel2.R;
-			double rDiffG = double(pixel1.G) - pixel2.G;
-			double rDiffB = double(pixel1.B) - pixel2.B;
-			double diff = rDiffR * rDiffR + rDiffG * rDiffG + rDiffB * rDiffB;
-			totalDiff += diff;
-
-			min = qMin(min, pixel1.R + pixel1.G + pixel1.B);
-			max = qMax(max, pixel1.R + pixel1.G + pixel1.B);
-		}
-	}
-	double diffPerPixel = totalDiff / numberOfPixels;
-
-	if (min > 245 * 3 || max < 5 * 10 || max - min < 5)
-	{
-		diffPerPixel = 0;
-		qDebug() << "blank image";
-	}
-
-	return diffPerPixel;
 }
 
 void cRandomizerDialog::closeEvent(QCloseEvent *event)
@@ -1008,4 +1058,86 @@ void cRandomizerDialog::slotRenderTime(double time)
 	versionTimeString = tr("Version %1, time %2s").arg(previewNumber).arg(time, 0, 'f', 1);
 
 	groupboxWidget->setTitle(versionTimeString);
+}
+
+void cRandomizerDialog::slotCleanUp()
+{
+	QString progressBarText("Initializing cleaning up");
+	ui->progressBar->setFormat(progressBarText);
+	ui->progressBar->setValue(0.0);
+
+	progressText.ResetTimer();
+
+	// refresh actual reference image
+	RefreshReferenceImage();
+
+	// render the same image as actual to calculate reference noise
+	CalcReferenceNoise();
+
+	cParameterContainer actualParamsCleaned = actualParams;
+	cFractalContainer actualFractParamsCleaned = actualFractParams;
+
+	QList<QString> list = actualListOfChangedParameters.keys();
+
+	cThumbnailWidget *cleanedPreview = new cThumbnailWidget();
+	cleanedPreview->SetSize(previewWidth, previewHeight, qualityMultiplier);
+	cleanedPreview->DisableThumbnailCache();
+	cleanedPreview->DisableTimer();
+
+	for (int i = 0; i < list.size(); i++)
+	{
+		QString fullParameterName = list.at(i);
+		int firstDashIndex = fullParameterName.indexOf("_");
+		QString parameterName = fullParameterName.mid(firstDashIndex + 1);
+
+		cParameterContainer *containerOrigin = ContainerSelector(fullParameterName, gPar, gParFractal);
+
+		cParameterContainer *containerCleaned =
+			ContainerSelector(fullParameterName, &actualParamsCleaned, &actualFractParamsCleaned);
+
+		cParameterContainer *containerActual =
+			ContainerSelector(fullParameterName, &actualParams, &actualFractParams);
+
+		cOneParameter parameterOrigin = containerOrigin->GetAsOneParameter(parameterName);
+		containerCleaned->SetFromOneParameter(parameterName, parameterOrigin);
+
+		// render cleaned settings
+		cleanedPreview->AssignParameters(actualParamsCleaned, actualFractParamsCleaned);
+		if (!cleanedPreview->IsRendered())
+		{
+			cleanedPreview->slotRender();
+			while (!cleanedPreview->IsRendered())
+			{
+				QApplication::processEvents();
+				Wait(10);
+			}
+		}
+		cImage *actualImage = ui->previewwidget_actual->GetImage();
+		cImage *cleanedImage = cleanedPreview->GetImage();
+		double diff = cleanedImage->VisualCompare(actualImage, false);
+
+		// retrieve randomized parameter because change was significant
+		if (diff > referenceNoise * 3)
+		{
+			cOneParameter parameterActual = containerActual->GetAsOneParameter(parameterName);
+			containerCleaned->SetFromOneParameter(parameterName, parameterActual);
+		}
+		else
+		{
+			actualListOfChangedParameters.remove(fullParameterName);
+		}
+
+		double progress = double(i + 1) / (list.size());
+		UpdateProgressBar(progress);
+		QApplication::processEvents();
+	}
+
+	actualParams = actualParamsCleaned;
+	actualFractParams = actualFractParamsCleaned;
+
+	// refresh actual reference image
+	RefreshReferenceImage();
+	ui->previewwidget_actual->setToolTip(CreateTooltipText(actualListOfChangedParameters));
+
+	delete cleanedPreview;
 }
